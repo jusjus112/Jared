@@ -11,8 +11,10 @@ import com.jusjus.includes.module.DiscordModule;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import java.security.InvalidKeyException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.security.auth.login.LoginException;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -36,13 +38,19 @@ public class CryptoFromNowhereImpl {
   @Getter
   private static Guild guild;
 
-  public void initialize() throws LoginException, InterruptedException {
+  public void initialize() throws LoginException, InterruptedException, InvalidKeyException {
     // Module Initialization
+    Map<String, String> environmentVariables = System.getenv();
+
     commandManager = new CommandManager(this);
     componentController = new ComponentsController(this);
     this.assistantController = new AssistantController(this);
 
-    JDABuilder builder = JDABuilder.createDefault("SECRET");
+    if (!environmentVariables.containsKey("KEY")){
+      throw new InvalidKeyException("Key not set or invalid for discord bot!");
+    }
+
+    JDABuilder builder = JDABuilder.createDefault(environmentVariables.get("KEY"));
     builder.setAutoReconnect(true);
     builder.setActivity(Activity.watching("you"));
     builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
