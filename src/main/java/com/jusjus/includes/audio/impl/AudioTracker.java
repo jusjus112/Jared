@@ -44,10 +44,13 @@ public class AudioTracker extends AudioEventAdapter {
     return this.queue.element();
   }
 
-  public void skipCurrent(){
-    this.audioPlayer.stopTrack();
-    this.queue.remove();
-    this.audioPlayer.playTrack(this.queue.element().track());
+  public boolean skipCurrent(){
+    if (this.queue.size() > 1) {
+      // New track will automatically be played once stopped and queue is not empty.
+      this.audioPlayer.stopTrack();
+      return true;
+    }
+    return false;
   }
 
   public boolean tryToJoinVoiceChannel(Channel channel, Member author){

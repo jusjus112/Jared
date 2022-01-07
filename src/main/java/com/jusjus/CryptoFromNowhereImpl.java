@@ -42,7 +42,7 @@ public class CryptoFromNowhereImpl {
     componentController = new ComponentsController(this);
     this.assistantController = new AssistantController(this);
 
-    JDABuilder builder = JDABuilder.createDefault("SECRET_CODE");
+    JDABuilder builder = JDABuilder.createDefault("SECRET");
     builder.setAutoReconnect(true);
     builder.setActivity(Activity.watching("you"));
     builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);

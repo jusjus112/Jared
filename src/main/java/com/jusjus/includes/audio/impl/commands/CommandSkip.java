@@ -23,8 +23,13 @@ public class CommandSkip extends DiscordCommand {
   public void execute(Member member, MessageChannel channel, Message message, String rawContent,
       String[] args) {
 
-    this.audioController.getAudioTracker().skipCurrent();
-    message.reply("Skipped current song.").queue();
-    message.reply("New song: **" + this.audioController.getAudioTracker().getCurrentTrack().track().getInfo().title + "**").queue();
+    if (this.audioController.getAudioTracker().skipCurrent()) {
+      message.reply("Skipped current song.").queue();
+      message.reply(
+          "New song: **" + this.audioController.getAudioTracker().getCurrentTrack().track()
+              .getInfo().title + "**").queue();
+    }else{
+      message.reply("I can't skip this track for you, unknown next song or something went wrong.").queue();
+    }
   }
 }
