@@ -64,20 +64,20 @@ public class CryptoFromNowhereImpl {
     AudioSourceManagers.registerRemoteSources(playerManager);
     new AudioController(this, playerManager);
 
+    bot = builder.build().awaitReady();
+    guild = bot.getGuilds().iterator().next();
+
     getModules().forEach(discordModule -> {
       // Register event listeners
       Arrays.stream(discordModule.registerEventListeners()).forEachOrdered(
           builder::addEventListeners);
 
-      System.out.println("Registering for " + discordModule.toString());
+      System.out.println("Registering for " + discordModule);
       // Register commands
       Arrays.stream(discordModule.registerCommands(this.commandManager)).forEachOrdered(discordCommand -> {
-        CommandManager.get().addCommand(discordCommand);
+        CommandManager.get().addCommand(discordCommand, bot);
       });
     });
-
-    bot = builder.build().awaitReady();
-    guild = bot.getGuilds().iterator().next();
 
     System.out.println("Guilds: " + bot.getGuilds());
 

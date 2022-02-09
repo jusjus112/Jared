@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import lombok.Getter;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 public class CommandManager extends DiscordModule<CryptoFromNowhereImpl> {
 
@@ -90,9 +92,19 @@ public class CommandManager extends DiscordModule<CryptoFromNowhereImpl> {
         return false;
     }
 
-    public void addCommand(DiscordCommand discordCommand){
+    public void addCommand(DiscordCommand discordCommand, JDA jda){
         if (!this.commands.contains(discordCommand)) {
             this.commands.add(discordCommand);
+            discordCommand.getAliases().forEach(alias -> {
+                CommandData commandData = new CommandData(alias, discordCommand.getDescription());
+
+                jda.upsertCommand(commandData).queue();
+                jda.getGuilds().forEach(guild -> {
+                    guild.updateCommands().addCommands(commandData).queue();
+                });
+
+                System.out.println("Registering command: " + alias + " - " + discordCommand.getDescription());
+            });
         }
     }
 

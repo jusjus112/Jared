@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class MessageBuilder {
@@ -86,6 +87,10 @@ public class MessageBuilder {
 
     public void reply(Message message){
         message.replyEmbeds(this.build()).queue();
+    }
+
+    public void reply(SlashCommandEvent slashCommandEvent){
+        slashCommandEvent.replyEmbeds(this.build()).queue();
     }
 
     public void sendMessage(MessageChannel channel, Consumer<Message> onSuccess){

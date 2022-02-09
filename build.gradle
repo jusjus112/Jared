@@ -38,6 +38,7 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1' // GSON
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
     compile group: 'com.google.guava', name: 'guava', version: 'r05' // Guava
+    compile 'com.google.apis:google-api-services-youtube:v3-rev20210915-1.32.1'
     compile group: 'com.github.enerccio', name: 'gson-utilities', version: '1.1.0' // GSON Utility
 }
 

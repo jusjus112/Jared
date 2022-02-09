@@ -8,7 +8,10 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.player.event.TrackEndEvent;
 import com.sedmelluq.discord.lavaplayer.player.event.TrackStartEvent;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -51,6 +54,21 @@ public class AudioTracker extends AudioEventAdapter {
       return true;
     }
     return false;
+  }
+
+  public boolean shuffleQueue() {
+    if (getQueuedTracks().size() > 0) {
+      List<AudioInfo> tQueue = new ArrayList<>(getQueuedTracks());
+      AudioInfo current = tQueue.get(0);
+      tQueue.remove(0);
+      Collections.shuffle(tQueue);
+      tQueue.add(0, current);
+      queue.clear();
+      queue.addAll(tQueue);
+      return true;
+    }else{
+      return false;
+    }
   }
 
   public boolean tryToJoinVoiceChannel(Channel channel, Member author){

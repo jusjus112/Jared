@@ -1,5 +1,6 @@
 package com.jusjus.includes.command.object;
 
+import com.google.api.client.util.Lists;
 import com.jusjus.includes.DiscordRank;
 import com.jusjus.includes.command.CommandManager;
 import java.util.ArrayList;
@@ -37,10 +38,17 @@ public abstract class DiscordCommand {
         this.commandManager = commandManager;
         this.description = description;
         this.permission = permission;
-        this.aliases = new ArrayList<>();
+        this.aliases = Arrays.asList(aliases);
         this.prefix = prefix;
+    }
 
-        Arrays.asList(aliases).forEach(cmd -> this.aliases.add(prefix+cmd));
+    public List<String> getFormattedAliases(){
+        List<String> aliases = Lists.newArrayList();
+
+        Lists.newArrayList(this.aliases).forEach(cmd ->
+            aliases.add(prefix+cmd)
+        );
+        return aliases;
     }
 
     public abstract void execute(Member member, MessageChannel channel,
